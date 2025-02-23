@@ -1,8 +1,8 @@
 [package]
 name = "jprect"
-version = "0.0.0"
+version = "0.0.2"
 license = "MIT"
-description = "Japan Plane Rectangular Coordinate Systems"
+description = "Japan Plane Rectangular Coordinate System"
 edition = "2021"
 
 [dependencies]
