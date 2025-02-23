@@ -2,7 +2,7 @@
 //!
 //! Ported from PROJ (<https://github.com/OSGeo/PROJ/blob/master/src/projections/tmerc.cpp>).
 
-use crate::{ellipsoid::Ellipsoid, error::TransformError};
+use crate::error::TransformError;
 
 /* Constant for "exact" transverse mercator */
 const ETMERC_ORDER: usize = 6;
@@ -35,12 +35,21 @@ pub struct ExtendedTransverseMercatorProjection {
 }
 
 impl ExtendedTransverseMercatorProjection {
-    pub fn new(lng0: f64, lat0: f64, k: f64, ellips: &Ellipsoid) -> Self {
-        let q = setup_exact(lat0.to_radians(), k, ellips);
+    /// Creates a new Extended Transverse Mercator Projection
+    /// with the given parameters.
+    ///
+    /// # Arguments
+    /// * `lng0` - Longitude in degrees.
+    /// * `lat0` - Latitude in degrees.
+    /// * `k` - Scale factor
+    /// * `a` - Semi-major axis
+    /// * `f` - Flattening factor
+    pub fn new(lng0: f64, lat0: f64, k: f64, a: f64, f: f64) -> Self {
+        let q = setup_exact(lat0.to_radians(), k, f);
         Self {
             q,
             lam0: lng0.to_radians(),
-            a: ellips.a(),
+            a,
         }
     }
 
@@ -213,7 +222,7 @@ impl ExtendedTransverseMercatorProjection {
     }
 }
 
-fn setup_exact(phi0: f64, k: f64, ellips: &Ellipsoid) -> PoderEngsager {
+fn setup_exact(phi0: f64, k: f64, f: f64) -> PoderEngsager {
     let mut q = PoderEngsager {
         q_n: 0.,
         z_b: 0.,
@@ -224,7 +233,7 @@ fn setup_exact(phi0: f64, k: f64, ellips: &Ellipsoid) -> PoderEngsager {
     };
 
     // third flattening
-    let n: f64 = ellips.f() / (2. - ellips.f());
+    let n: f64 = f / (2. - f);
 
     let mut np: f64 = n;
 
@@ -390,7 +399,8 @@ mod tests {
         let lat = 36.65209371778363;
 
         let ellips = grs80();
-        let tmerc = ExtendedTransverseMercatorProjection::new(lng0, lat0, k, &ellips);
+        let tmerc =
+            ExtendedTransverseMercatorProjection::new(lng0, lat0, k, ellips.a(), ellips.f());
 
         let (x, y, _z) = tmerc.project_forward(lng, lat, 0.).unwrap();
         assert!((x - -27430.911753676937).abs() < 1e-9);

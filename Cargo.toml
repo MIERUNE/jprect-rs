@@ -1,0 +1,9 @@
+[package]
+name = "jprect"
+version = "0.0.0"
+license = "MIT"
+description = "Japan Plane Rectangular Coordinate Systems"
+edition = "2021"
+
+[dependencies]
+thiserror = "2"

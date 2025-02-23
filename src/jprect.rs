@@ -49,7 +49,14 @@ impl JPRZone {
     /// Gets the transverse mercator projection for the zone.
     pub fn projection(&self) -> ExtendedTransverseMercatorProjection {
         let params = self.params();
-        ExtendedTransverseMercatorProjection::new(params.lng0(), params.lat0(), JPR_K, &grs80())
+        let ellips = grs80();
+        ExtendedTransverseMercatorProjection::new(
+            params.lng0(),
+            params.lat0(),
+            JPR_K,
+            ellips.a(),
+            ellips.f(),
+        )
     }
 
     /// Get the zone from the zone number.
@@ -389,7 +396,7 @@ mod tests {
         let zone = JPRZone::from_epsg(EPSG_TOKYO_JPRECT_XIX);
         assert_eq!(zone, Some(JPRZone::Zone19));
 
-        let zone = JPRZone::from_epsg(EPSG_JGD2011_GEOGRAPHIC_3D);
+        let zone = JPRZone::from_epsg(4326);
         assert_eq!(zone, None);
     }
 
