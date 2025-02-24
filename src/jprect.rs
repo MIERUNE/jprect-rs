@@ -2,7 +2,7 @@
 
 use crate::{crs::*, ellipsoid::grs80, etmerc::ExtendedTransverseMercatorProjection};
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy, Hash, Eq)]
 pub enum JPRZone {
     Zone1,
     Zone2,
