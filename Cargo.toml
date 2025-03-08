@@ -1,9 +1,10 @@
 [package]
 name = "jprect"
-version = "0.0.4"
+version = "0.0.5"
 license = "MIT"
 description = "Japan Plane Rectangular Coordinate System"
 edition = "2021"
+categories = ["science::geo"]
 
 [dependencies]
 thiserror = "2"
