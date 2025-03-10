@@ -1,8 +1,9 @@
 [package]
 name = "jprect"
-version = "0.0.5"
+version = "0.1.0"
 license = "MIT"
 description = "Japan Plane Rectangular Coordinate System"
+repository = "https://github.com/ciscorn/jprect-rs"
 edition = "2021"
 categories = ["science::geo"]
 
